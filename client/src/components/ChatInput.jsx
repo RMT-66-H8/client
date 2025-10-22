@@ -1,4 +1,6 @@
 import React from 'react';
+import { Form, InputGroup, Button } from 'react-bootstrap';
+import { Send } from 'react-bootstrap-icons';
 
 export default function ChatInput({ 
   value, 
@@ -15,43 +17,28 @@ export default function ChatInput({
   };
   
   return (
-    <div style={{ 
-      padding: '20px',
-      borderTop: '1px solid'
-    }}>
-      <form onSubmit={handleSubmit}>
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <input
+    <div className="p-3 border-top">
+      <Form onSubmit={handleSubmit}>
+        <InputGroup>
+          <Form.Control
             type="text"
             value={value}
             onChange={(e) => onChange(e.target.value)}
             placeholder="Type your message..."
             disabled={disabled}
-            style={{
-              flex: 1,
-              padding: '12px',
-              border: '1px solid',
-              borderRadius: '8px',
-              fontSize: '14px'
-            }}
+            aria-label="Message input"
           />
           
-          <button
+          <Button
             type="submit"
+            variant="success"
             disabled={disabled || !value.trim()}
-            style={{
-              padding: '12px 24px',
-              border: '1px solid',
-              borderRadius: '8px',
-              cursor: disabled ? 'not-allowed' : 'pointer',
-              fontSize: '14px',
-              fontWeight: 'bold'
-            }}
           >
+            <Send className="me-2" />
             Send
-          </button>
-        </div>
-      </form>
+          </Button>
+        </InputGroup>
+      </Form>
     </div>
   );
 }

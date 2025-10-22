@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { Modal, Form, Button, Badge, Spinner } from 'react-bootstrap';
+import { Robot } from 'react-bootstrap-icons';
 import Swal from 'sweetalert2';
-import { httpClient } from '../helpers/http';
+import { http } from '../helpers/http';
 
 export default function AISupportModal({ isOpen, onClose, quickHelp }) {
   const [question, setQuestion] = useState('');
@@ -23,7 +25,7 @@ export default function AISupportModal({ isOpen, onClose, quickHelp }) {
 
     setLoading(true);
     try {
-      const { data } = await httpClient.post('/messages/ai', {
+      const { data } = await http.post('/messages/ai', {
         message: userQuestion,
       });
 
@@ -59,118 +61,81 @@ export default function AISupportModal({ isOpen, onClose, quickHelp }) {
     getAIHelp(question);
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: 'rgba(0,0,0,0.5)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 1000
-    }}>
-      <div style={{
-        backgroundColor: 'white',
-        borderRadius: '12px',
-        padding: '24px',
-        maxWidth: '600px',
-        width: '90%',
-        maxHeight: '80vh',
-        overflow: 'auto'
-      }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-          <h2 style={{ margin: 0 }}>AI Support</h2>
-          <button onClick={onClose} style={{
-            background: 'transparent',
-            border: 'none',
-            fontSize: '24px',
-            cursor: 'pointer'
-          }}>×</button>
-        </div>
-
+    <Modal show={isOpen} onHide={onClose} size="lg" centered>
+      <Modal.Header closeButton>
+        <Modal.Title>
+          <Robot className="me-2" size={28} />
+          AI Support
+        </Modal.Title>
+      </Modal.Header>
+      
+      <Modal.Body>
         {quickHelp && quickHelp.length > 0 && (
-          <div style={{ marginBottom: '20px' }}>
-            <h4 style={{ marginBottom: '10px', fontSize: '14px' }}>Quick Help Topics:</h4>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+          <div className="mb-4">
+            <h6 className="mb-3">Quick Help Topics:</h6>
+            <div className="d-flex flex-wrap gap-2">
               {quickHelp.map((topic, index) => (
-                <button
+                <Badge
                   key={index}
-                  onClick={() => handleQuickHelp(topic.question || topic.title || topic)}
-                  disabled={loading}
-                  style={{
-                    padding: '6px 12px',
-                    border: '1px solid',
-                    borderRadius: '16px',
-                    cursor: loading ? 'not-allowed' : 'pointer',
-                    fontSize: '12px',
-                    background: 'white'
-                  }}
+                  bg="light"
+                  text="dark"
+                  className="border"
+                  style={{ cursor: loading ? 'not-allowed' : 'pointer' }}
+                  onClick={() => !loading && handleQuickHelp(topic.question || topic.title || topic)}
                 >
                   {topic.title || topic.question || topic}
-                </button>
+                </Badge>
               ))}
             </div>
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: '16px' }}>
-            <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: 'bold' }}>
-              Ask AI Support:
-            </label>
-            <textarea
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3">
+            <Form.Label className="fw-bold">Ask AI Support:</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={4}
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               placeholder="Type your question here..."
               disabled={loading}
-              rows={4}
-              style={{
-                width: '100%',
-                padding: '12px',
-                border: '1px solid #ccc',
-                borderRadius: '8px',
-                fontSize: '14px',
-                resize: 'vertical'
-              }}
             />
-          </div>
+          </Form.Group>
 
-          <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
-            <button
-              type="button"
+          <div className="d-flex gap-2 justify-content-end">
+            <Button
+              variant="secondary"
               onClick={onClose}
               disabled={loading}
-              style={{
-                padding: '10px 20px',
-                border: '1px solid',
-                borderRadius: '8px',
-                cursor: loading ? 'not-allowed' : 'pointer',
-                background: 'white'
-              }}
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
+              variant="primary"
               disabled={loading || !question.trim()}
-              style={{
-                padding: '10px 20px',
-                border: '1px solid',
-                borderRadius: '8px',
-                cursor: (loading || !question.trim()) ? 'not-allowed' : 'pointer',
-                fontWeight: 'bold'
-              }}
             >
-              {loading ? 'Getting Answer...' : 'Get AI Help'}
-            </button>
+              {loading ? (
+                <>
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                    className="me-2"
+                  />
+                  Getting Answer...
+                </>
+              ) : (
+                'Get AI Help'
+              )}
+            </Button>
           </div>
-        </form>
-      </div>
-    </div>
+        </Form>
+      </Modal.Body>
+    </Modal>
   );
 }
