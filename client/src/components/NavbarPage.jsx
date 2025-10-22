@@ -1,7 +1,18 @@
-import { Navbar, Nav, Container, Form, FormControl, Button, InputGroup } from 'react-bootstrap'
-import { Search, Cart, PersonCircle } from "react-bootstrap-icons";
+import { Navbar, Nav, Container, Form, FormControl, Button, InputGroup, Dropdown } from 'react-bootstrap'
+import { Search, Cart, PersonCircle, ChatDots } from "react-bootstrap-icons";
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '../store/slices/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 export default function NavbarPage() {
+    const { user } = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        dispatch(logout());
+        navigate('/login');
+    };
 
     return (
         <>
@@ -44,14 +55,46 @@ export default function NavbarPage() {
                             <Button variant="light" className="me-2">
                                 <Cart size={24} />
                             </Button>
-                            <Button variant="light" className="me-3">
-                                <PersonCircle size={24} />
-                            </Button>
-                            <div className="vr d-none d-lg-block" />
-                            <Button variant="outline-success" className="ms-lg-3 me-2" href="/login">
-                                Masuk
-                            </Button>
-                            <Button variant="success" href="/register">Daftar</Button>
+                            
+                            {user ? (
+                                <>
+                                    <Button 
+                                        variant="light" 
+                                        className="me-2"
+                                        onClick={() => navigate('/chat')}
+                                        title="Messages"
+                                    >
+                                        <ChatDots size={24} />
+                                    </Button>
+                                    <Dropdown align="end">
+                                        <Dropdown.Toggle variant="light" id="dropdown-user">
+                                            <PersonCircle size={24} className="me-2" />
+                                            {user.name || user.email}
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu>
+                                            <Dropdown.Item onClick={() => navigate('/chat')}>
+                                                <ChatDots className="me-2" />
+                                                Messages
+                                            </Dropdown.Item>
+                                            <Dropdown.Divider />
+                                            <Dropdown.Item onClick={handleLogout}>
+                                                Logout
+                                            </Dropdown.Item>
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                </>
+                            ) : (
+                                <>
+                                    <Button variant="light" className="me-3">
+                                        <PersonCircle size={24} />
+                                    </Button>
+                                    <div className="vr d-none d-lg-block" />
+                                    <Button variant="outline-success" className="ms-lg-3 me-2" href="/login">
+                                        Masuk
+                                    </Button>
+                                    <Button variant="success" href="/register">Daftar</Button>
+                                </>
+                            )}
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

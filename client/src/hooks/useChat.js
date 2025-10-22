@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 export const useChat = () => {
   const dispatch = useDispatch();
   const { messages, loading, error, quickHelp } = useSelector((state) => state.messages);
+  const { user } = useSelector((state) => state.auth); // Get user from auth state
   const [inputMessage, setInputMessage] = useState('');
   
   useEffect(() => {
@@ -92,12 +93,13 @@ export const useChat = () => {
     }
   };
   
-  const requestAIResponse = async (userMessage) => {
+  const requestAIResponse = async (userMessage, userId) => {
     try {
       const { data } = await http.post('/messages/ai', {
-        message: userMessage,
+        content: userMessage,
+        userId: userId
       });
-      return data.aiMessage;
+      return data.data;
     } catch (err) {
       console.error('Error requesting AI response:', err);
       Swal.fire({
@@ -135,20 +137,15 @@ export const useChat = () => {
     }
   };
   
-  /**
-   * Send message dan langsung request AI response
-   */
   const sendMessageWithAI = async (content) => {
     const userMessage = await sendMessage(content);
-    if (userMessage) {
-      // Delay sedikit biar user message muncul dulu
+    if (userMessage && user) {
       setTimeout(() => {
-        requestAIResponse(content);
+        requestAIResponse(content, user.id);
       }, 500);
     }
   };
   
-  // Return semua state & functions yang bisa dipakai di component
   return {
     // State
     messages,
@@ -157,7 +154,6 @@ export const useChat = () => {
     quickHelp,
     inputMessage,
     
-    // Functions
     setInputMessage,
     sendMessage,
     sendMessageWithAI,
