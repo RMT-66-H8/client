@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router'
 import HomePage from './pages/HomePage'
-import ChatPage from './pages/Chatpage'
+import ChatPage from './pages/ChatPage'
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 // import PrivateRoute from './components/PrivateRoute';
