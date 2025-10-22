@@ -1,8 +1,11 @@
 ﻿import { useState } from 'react';
+import { Container, Card, Button, Alert } from 'react-bootstrap';
+import { ChatDots } from 'react-bootstrap-icons';
 import { useChat } from '../hooks/useChat';
 import MessageList from '../components/MessageList';
 import ChatInput from '../components/ChatInput';
 import AISupportModal from '../components/AISupportModal';
+import NavbarPage from '../components/NavbarPage';
 
 export default function ChatPage() {
   const {
@@ -24,49 +27,49 @@ export default function ChatPage() {
   
   
   return (
-    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <div>
-          <h1 style={{ margin: 0 }}>Messages</h1>
-          <p style={{ margin: '5px 0 0 0', fontSize: '14px' }}>Chat with other users</p>
+    <>
+      <NavbarPage />
+      <Container className="mt-4" style={{ maxWidth: '900px' }}>
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h1 className="mb-1">
+              <ChatDots className="me-2" />
+              Messages
+            </h1>
+            <p className="text-muted mb-0">Chat with other users</p>
+          </div>
+          <Button 
+            variant="outline-primary" 
+            onClick={() => setShowAIModal(true)}
+            size="lg"
+          >
+            <ChatDots className="me-2" />
+            Need Help? Ask AI
+          </Button>
         </div>
-        <button
-          onClick={() => setShowAIModal(true)}
-          style={{
-            padding: '12px 24px',
-            border: '1px solid',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            fontWeight: 'bold',
-            fontSize: '14px',
-            background: 'white'
-          }}
-        >
-          Need Help? Ask AI
-        </button>
-      </div>
-      
-      <div style={{ border: '1px solid', borderRadius: '8px' }}>
-        <MessageList messages={messages} loading={loading} onDelete={deleteMessage} />
-        <ChatInput 
-          value={inputMessage} 
-          onChange={setInputMessage} 
-          onSendMessage={handleSendMessage}
-          disabled={loading} 
-        />
-      </div>
-      
-      {error && (
-        <div style={{ marginTop: '20px', padding: '12px', border: '1px solid', borderRadius: '8px' }}>
-          {error}
-        </div>
-      )}
+        
+        <Card className="shadow-sm">
+          <MessageList messages={messages} loading={loading} onDelete={deleteMessage} />
+          <ChatInput 
+            value={inputMessage} 
+            onChange={setInputMessage} 
+            onSendMessage={handleSendMessage}
+            disabled={loading} 
+          />
+        </Card>
+        
+        {error && (
+          <Alert variant="danger" className="mt-3">
+            {error}
+          </Alert>
+        )}
 
-      <AISupportModal 
-        isOpen={showAIModal}
-        onClose={() => setShowAIModal(false)}
-        quickHelp={quickHelp}
-      />
-    </div>
+        <AISupportModal 
+          isOpen={showAIModal}
+          onClose={() => setShowAIModal(false)}
+          quickHelp={quickHelp}
+        />
+      </Container>
+    </>
   );
 }

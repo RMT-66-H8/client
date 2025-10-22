@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { httpClient } from '../helpers/http';
+import { http } from '../helpers/http';
 import { socket, connectSocket, disconnectSocket } from '../helpers/socket';
 import { setMessages, addMessage, removeMessage, setQuickHelp, setLoading, setError } from '../store/slices/messageSlice';
 import Swal from 'sweetalert2';
@@ -44,7 +44,7 @@ export const useChat = () => {
   const fetchAllMessages = async () => {
     try {
       dispatch(setLoading(true));
-      const { data } = await httpClient.get('/messages');
+      const { data } = await http.get('/messages');
       dispatch(setMessages(data.messages || []));
     } catch (err) {
       console.error('Error fetching messages:', err);
@@ -61,7 +61,7 @@ export const useChat = () => {
   
   const fetchQuickHelpTopics = async () => {
     try {
-      const { data } = await httpClient.get('/messages/quick-help');
+      const { data } = await http.get('/messages/quick-help');
       dispatch(setQuickHelp(data || []));
     } catch (err) {
       console.error('Error fetching quick help:', err);
@@ -79,7 +79,7 @@ export const useChat = () => {
     }
     
     try {
-      const { data } = await httpClient.post('/messages', { content });
+      const { data } = await http.post('/messages', { content });
       setInputMessage('');
       return data.message;
     } catch (err) {
@@ -94,7 +94,7 @@ export const useChat = () => {
   
   const requestAIResponse = async (userMessage) => {
     try {
-      const { data } = await httpClient.post('/messages/ai', {
+      const { data } = await http.post('/messages/ai', {
         message: userMessage,
       });
       return data.aiMessage;
@@ -122,7 +122,7 @@ export const useChat = () => {
       });
       
       if (result.isConfirmed) {
-        await httpClient.delete(`/messages/${messageId}`);
+        await http.delete(`/messages/${messageId}`);
         Swal.fire('Deleted!', 'Message has been deleted', 'success');
       }
     } catch (err) {
