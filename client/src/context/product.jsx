@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useCallback, useContext } from "react";
-import api from "../helpers/http";
+import { http } from "../helpers/http";
 
 export const productContext = createContext({
     products: [],
@@ -11,7 +11,7 @@ export function ProductProvider({ children }) {
 
     const fetchProducts = useCallback(async () => {
         try {
-            const response = await api({
+            const response = await http({
                 method: "GET",
                 url: "/products",
             });
