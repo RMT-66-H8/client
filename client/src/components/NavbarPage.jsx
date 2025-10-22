@@ -48,10 +48,10 @@ export default function NavbarPage() {
                                 <PersonCircle size={24} />
                             </Button>
                             <div className="vr d-none d-lg-block" />
-                            <Button variant="outline-success" className="ms-lg-3 me-2">
+                            <Button variant="outline-success" className="ms-lg-3 me-2" href="/login">
                                 Masuk
                             </Button>
-                            <Button variant="success">Daftar</Button>
+                            <Button variant="success" href="/register">Daftar</Button>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
