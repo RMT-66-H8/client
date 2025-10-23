@@ -1,5 +1,6 @@
 import { Navbar, Nav, Container, Form, FormControl, Button, InputGroup } from 'react-bootstrap'
-import { Search, Cart, PersonCircle } from "react-bootstrap-icons";
+import { Search, Cart, PlusSquare } from "react-bootstrap-icons";
+import { Link } from 'react-router-dom';
 
 export default function NavbarPage() {
 
@@ -7,8 +8,9 @@ export default function NavbarPage() {
         <>
             <Navbar bg="light" expand="lg" className="shadow-sm" sticky="top">
                 <Container fluid className="px-4">
-                    <Navbar.Brand href="#home" className="d-flex align-items-center">
-                        <div style={{
+                    <Navbar.Brand className="d-flex align-items-center">
+                        <Link to='/' className="d-flex align-items-center text-decoration-none">
+                            <div style={{
                             width: 36,
                             height: 36,
                             backgroundColor: '#00a64f',
@@ -20,7 +22,8 @@ export default function NavbarPage() {
                         }}>
                             <span style={{ color: '#fff', fontWeight: 700, fontSize: '1rem' }}>T</span>
                         </div>
-                        <span style={{ fontSize: '1.125rem', fontWeight: 700, color: '#0a0a0a' }}>ukupedia</span>
+                            <span style={{ fontSize: '1.125rem', fontWeight: 700, color: '#0a0a0a' }}>ukupedia</span>
+                        </Link>
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
@@ -41,12 +44,16 @@ export default function NavbarPage() {
                             </InputGroup>
                         </Form>
                         <Nav className="align-items-center">
-                            <Button variant="light" className="me-2">
-                                <Cart size={24} />
-                            </Button>
-                            <Button variant="light" className="me-3">
-                                <PersonCircle size={24} />
-                            </Button>
+                            <Link to='/cart'>
+                                <Button variant="light" className="me-2">
+                                    <Cart size={24} />
+                                </Button>
+                            </Link>
+                            <Link to='/add-product'>
+                                <Button variant="light" className="me-3" title="Tambah Produk">
+                                    <PlusSquare size={24} />
+                                </Button>
+                            </Link>
                             <div className="vr d-none d-lg-block" />
                             <Button variant="outline-success" className="ms-lg-3 me-2" href="/login">
                                 Masuk

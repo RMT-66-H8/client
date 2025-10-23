@@ -3,6 +3,8 @@ import HomePage from './pages/HomePage'
 import ChatPage from './pages/ChatPage'
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import AddProductPage from './pages/AddProductPage';
+import CartPage from './pages/CartPage';
 // import PrivateRoute from './components/PrivateRoute';
 
 
@@ -14,6 +16,9 @@ function App() {
         <Route path='/' element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+
+        <Route path='/add-product' element={<AddProductPage />} />
+        <Route path='/cart' element={<CartPage />} />
 
         <Route path='/chat' element={<ChatPage />} />
       </Routes>
