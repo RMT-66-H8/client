@@ -3,6 +3,7 @@ import { useState } from 'react'
 import api, { http } from '../helpers/http'
 
 export default function CardPage({ products = [] }) {
+    const list = Array.isArray(products) ? products : (products && products.products) || []
     const [loadingMap, setLoadingMap] = useState({})
     const [addedMap, setAddedMap] = useState({})
 
@@ -28,7 +29,7 @@ export default function CardPage({ products = [] }) {
     return (
         <>
             <Row xs={2} md={4} lg={6} className="g-3">
-                {products.map((product) => (
+                {list.map((product) => (
                     <Col key={product.id}>
                         <Card className="h-100 product-card">
                             <Card.Img variant="top" src={product.image || product.imageUrl} />

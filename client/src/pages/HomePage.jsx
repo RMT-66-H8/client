@@ -7,6 +7,9 @@ import { useEffect } from "react";
 export default function HomePage() {
     const { products } = useProduct()
 
+    console.log({products});
+    
+
     return (
         <>
             <NavbarPage />

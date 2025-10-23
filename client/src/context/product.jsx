@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useCallback, useContext } from "react";
+import { createContext, useState, useEffect, useCallback, useContext } from "react";
 import { http } from "../helpers/http";
 
 export const productContext = createContext({
@@ -16,7 +16,9 @@ export function ProductProvider({ children }) {
                 url: "/products",
             });
 
-            setProducts(response.data || []);
+            console.log(response.data, '<<<<< response.data');
+            const normalized = response.data && response.data.products ? response.data.products : response.data;
+            setProducts(normalized || []);
         } catch (error) {
             console.error(error);
         }

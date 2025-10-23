@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import api from '../../helpers/http';
+import { http } from '../../helpers/http';
 
 // Login Thunk
 export const login = createAsyncThunk('auth/login', async (payload, { rejectWithValue }) => {
   try {
-    const { data } = await api.post('/login', payload);
+    const { data } = await http.post('/login', payload);
     localStorage.setItem('access_token', data.token);
     return data;
   } catch (err) {
@@ -15,7 +15,7 @@ export const login = createAsyncThunk('auth/login', async (payload, { rejectWith
 // Register Thunk
 export const register = createAsyncThunk('auth/register', async (payload, { rejectWithValue }) => {
   try {
-    const { data } = await api.post('/register', payload);
+    const { data } = await http.post('/register', payload);
     localStorage.setItem('access_token', data.token);
     return data;
   } catch (err) {
