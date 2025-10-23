@@ -1,7 +1,5 @@
 import { Navbar, Nav, Container, Form, FormControl, Button, InputGroup } from 'react-bootstrap'
-import { Search, Cart, PlusSquare } from "react-bootstrap-icons";
 import { Link } from 'react-router-dom';
-import { Navbar, Nav, Container, Form, FormControl, Button, InputGroup, Dropdown } from 'react-bootstrap'
 import { Search, Cart, PersonCircle, ChatDots } from "react-bootstrap-icons";
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../store/slices/authSlice';
@@ -24,17 +22,17 @@ export default function NavbarPage() {
                     <Navbar.Brand className="d-flex align-items-center">
                         <Link to='/' className="d-flex align-items-center text-decoration-none">
                             <div style={{
-                            width: 36,
-                            height: 36,
-                            backgroundColor: '#00a64f',
-                            borderRadius: 6,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            marginRight: 4
-                        }}>
-                            <span style={{ color: '#fff', fontWeight: 700, fontSize: '1rem' }}>T</span>
-                        </div>
+                                width: 36,
+                                height: 36,
+                                backgroundColor: '#00a64f',
+                                borderRadius: 6,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                marginRight: 4
+                            }}>
+                                <span style={{ color: '#fff', fontWeight: 700, fontSize: '1rem' }}>T</span>
+                            </div>
                             <span style={{ fontSize: '1.125rem', fontWeight: 700, color: '#0a0a0a' }}>ukupedia</span>
                         </Link>
                     </Navbar.Brand>
@@ -57,14 +55,16 @@ export default function NavbarPage() {
                             </InputGroup>
                         </Form>
                         <Nav className="align-items-center">
-                            <Button variant="light" className="me-2">
-                                <Cart size={24} />
-                            </Button>
-                            
+                            <Link to='/cart'>
+                                <Button variant="light" className="me-2">
+                                    <Cart size={24} />
+                                </Button>
+                            </Link>
+
                             {user ? (
                                 <>
-                                    <Button 
-                                        variant="light" 
+                                    <Button
+                                        variant="light"
                                         className="me-2"
                                         onClick={() => navigate('/chat')}
                                         title="Messages"
