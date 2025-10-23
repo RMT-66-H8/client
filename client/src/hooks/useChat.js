@@ -69,7 +69,7 @@ export const useChat = () => {
     }
   };
   
-  const sendMessage = async (content) => {
+  const sendMessage = async (content, receiverId = null) => {
     if (!content.trim()) {
       Swal.fire({
         icon: 'warning',
@@ -80,8 +80,16 @@ export const useChat = () => {
     }
     
     try {
-      const { data } = await http.post('/messages', { content });
+      // receiverId = null means broadcast to all users
+      // receiverId = userId means private message to that user
+      const payload = { content };
+      if (receiverId) {
+        payload.receiverId = receiverId;
+      }
+      
+      const { data } = await http.post('/messages', payload);
       setInputMessage('');
+      console.log('💬 Message sent:', receiverId ? `to user ${receiverId}` : 'to all users');
       return data.message;
     } catch (err) {
       console.error('Error sending message:', err);
@@ -93,19 +101,30 @@ export const useChat = () => {
     }
   };
   
-  const requestAIResponse = async (userMessage, userId) => {
+  const requestAIResponse = async (userMessage) => {
+    if (!user) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Login Required',
+        text: 'Please login to use AI support',
+        confirmButtonColor: '#10b981'
+      });
+      return;
+    }
+
     try {
       const { data } = await http.post('/messages/ai', {
         content: userMessage,
-        userId: userId
+        userId: user.id
       });
-      return data.data;
+      return data;
     } catch (err) {
       console.error('Error requesting AI response:', err);
       Swal.fire({
         icon: 'error',
         title: 'AI Not Responding',
         text: err.response?.data?.message || 'An error occurred',
+        confirmButtonColor: '#ef4444'
       });
     }
   };
@@ -141,7 +160,7 @@ export const useChat = () => {
     const userMessage = await sendMessage(content);
     if (userMessage && user) {
       setTimeout(() => {
-        requestAIResponse(content, user.id);
+        requestAIResponse(content);
       }, 500);
     }
   };

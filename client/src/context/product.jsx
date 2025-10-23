@@ -16,9 +16,11 @@ export function ProductProvider({ children }) {
                 url: "/products",
             });
 
-            setProducts(response.data || []);
+            // API returns { products: [...] } according to documentation
+            setProducts(response.data.products || response.data || []);
         } catch (error) {
-            console.error(error);
+            console.error('Error fetching products:', error);
+            setProducts([]);
         }
     }, []);
 
