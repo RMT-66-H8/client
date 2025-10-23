@@ -6,7 +6,7 @@ export const productContext = createContext({
     fetchProducts: async () => {},
 });
 
-export function ProductProvider({ children }) {
+export function ProductProvider({ children }) { 
     const [products, setProducts] = useState([]);
 
     const fetchProducts = useCallback(async () => {
