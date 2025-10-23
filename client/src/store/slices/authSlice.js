@@ -4,9 +4,9 @@ import api from '../../helpers/http';
 // Login Thunk
 export const login = createAsyncThunk('auth/login', async (payload, { rejectWithValue }) => {
   try {
-    const { data } = await api.post('/auth/login', payload);
-    localStorage.setItem('access_token', data.access_token);
-    return data.user;
+    const { data } = await api.post('/login', payload);
+    localStorage.setItem('access_token', data.token);
+    return data;
   } catch (err) {
     return rejectWithValue(err.response?.data?.message || 'Login failed');
   }
@@ -15,7 +15,8 @@ export const login = createAsyncThunk('auth/login', async (payload, { rejectWith
 // Register Thunk
 export const register = createAsyncThunk('auth/register', async (payload, { rejectWithValue }) => {
   try {
-    const { data } = await api.post('/auth/register', payload);
+    const { data } = await api.post('/register', payload);
+    localStorage.setItem('access_token', data.token);
     return data;
   } catch (err) {
     return rejectWithValue(err.response?.data?.message || 'Register failed');
