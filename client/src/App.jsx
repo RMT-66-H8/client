@@ -3,6 +3,8 @@ import HomePage from './pages/HomePage'
 import ChatPage from './pages/ChatPage'
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import AddProductPage from './pages/AddProductPage';
+import CartPage from './pages/CartPage';
 import PrivateRoute from './components/PrivateRoute';
 
 
