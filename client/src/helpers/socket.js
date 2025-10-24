@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client';
 
 // Base URL untuk socket connection
-const SOCKET_URL =  'http://localhost:3000';
+const SOCKET_URL = 'https://tukupedia.akbarbudi.xyz/';
 
 // Buat socket connection instance
 export const socket = io(SOCKET_URL, {
